@@ -1,6 +1,6 @@
-#include "inc/mainwindow.hh"
+#include "inc/Mainwindow.hh"
 #include "inc/ui_connectionwitharduino.hh"
-#include "inc/WatekOdbioru.hh"
+#include "inc/CommunicationAndMyQThread.hh"
 
 #include <QApplication>
 #include <QLocale>
@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
+
     MainWindow w;
     w.show();
 

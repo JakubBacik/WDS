@@ -6,19 +6,22 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef CONNECTIONWITHARDUINO_H
-#define CONNECTIONWITHARDUINO_H
+#ifndef CONNECTIONDIALOG_H
+#define CONNECTIONDIALOG_H
 
 #include <QtCore/QVariant>
 #include <QtSerialPort>
 #include <QDialog>
 #include "ui_connectionwitharduino.hh"
 
-class ConnectionWithArduino : public QDialog
+/*!
+ * \brief Klasa definujaca wybor portu poprzez okno dialogowe
+ */
+class ConnectionDialog : public QDialog
 {
     Q_OBJECT
 public:
-    ConnectionWithArduino(QWidget *parent = 0);
+    ConnectionDialog(QWidget *parent = 0);
 
 private:
     Ui::ConnectionWithArduinoClass ui;
@@ -27,7 +30,7 @@ signals:
     void SendTo(QString portName);
 
 private slots:
-    void changePortName();
+    void setPortName();
 };
 
 #endif // UI_CONNECTIONWITHARDUINO_H

@@ -1,11 +1,11 @@
-#ifndef MAINWINDOW_HH
-#define MAINWINDOW_HH
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QtSerialPort>
-#include "connectionwitharduino.hh"
-#include "inc/BuforDanych.hh"
-#include "inc/WatekOdbioru.hh"
+#include "ConnectionDialog.hh"
+#include "inc/DataBuffer.hh"
+#include "inc/CommunicationAndMyQThread.hh"
 #include <QTimer>
 #include <QCloseEvent>
 #include <iostream>
@@ -16,8 +16,8 @@ QT_END_NAMESPACE
 
 /*!
  *\brief Definicja okna glownego
+ * Klasa ta jest definicja okna glownego odpowiedzalne za wizualizacje.
  *
- *Klasa ta jest definicja okna glownego
  */
 
 class MainWindow : public QMainWindow
@@ -34,10 +34,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    ConnectionWithArduino *connectionWithArduino;
+    ConnectionDialog *_connectionDialog;
 
 public slots:
-    void ChangeCurrentPort(QString portName);
+    void ConnectDevices(QString portName);
     void DisconnectDevices();
     void onStopertimeout();
 
@@ -46,4 +46,4 @@ private slots:
 protected:
     void closeEvent(QCloseEvent *pEvent)override;
 };
-#endif // MAINWINDOW_HH
+#endif // MAINWINDOW_H

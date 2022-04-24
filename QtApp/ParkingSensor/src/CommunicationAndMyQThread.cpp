@@ -10,14 +10,16 @@
   #pragma implementation
 #endif
 
-
-
-#include "inc/WatekOdbioru.hh"
+#include "inc/CommunicationAndMyQThread.hh"
 
 using namespace std;
 
-
-
+/*!
+ * \brief Metoda odpowiedzialna za otwarcie portu
+ * \param[in] serialPort - nazwa portu, ktory ma zostac otwarty
+ * \retval true - jesli zostanie otwarte polaczenie
+ * \retval false - w przypdaku przeciwnym
+ */
 bool Communication::OpenPort(const char *serialPort)
 {
   _qSerialPort->setPortName(serialPort);
@@ -28,22 +30,26 @@ bool Communication::OpenPort(const char *serialPort)
      _qSerialPort->setDataBits(QSerialPort::Data8);
     _qSerialPort->setParity(QSerialPort::NoParity);
     if (!_qSerialPort->open(QSerialPort::ReadOnly)) {
-        qDebug() << "Port opening error" << serialPort << endl;
+        cerr << "Port opening error" << serialPort << endl;
         return false;
     }
   }else{
-      qDebug() << "Port has been already open" << serialPort << endl;
+      cerr << "Port has been already open" << serialPort << endl;
   }
 
 
   return true;
 }
 
-
-
+/*!
+ * \brief Metoda odpowiedzialna za pobranie jednej linii danych
+ * z wybranego portu/
+ * \retval false - jesli nie ma dostepnych danych
+ * \retval true - w przeciwnym przypadku
+ */
 bool Communication::GetOneLine()
 {
-#define  LINE_SIZE 10
+#define  LINE_SIZE 50
   char line[LINE_SIZE+1];
   qint64  amountOfReveiceData;
 
@@ -61,8 +67,10 @@ bool Communication::GetOneLine()
 }
 
 
-
-
+/*!
+ * \brief Metoda odpowiadajaca za pobieranie danych gdy zostala
+ * ustawiona flaga oraz sa dostepne dane
+ */
 void Communication::ReceiveData()
 {
   while (Continue()) {
@@ -71,6 +79,11 @@ void Communication::ReceiveData()
 
 }
 
+/*!
+ * \brief Metoda odpowiedzialna za zamkniecie portu
+ * \retval false - jesli port nie zostal otwarty
+ * \retval true - jesli port zostal zamkniety
+ */
 bool Communication::ClosePort(){
     if(_qSerialPort->isOpen()){
         _qSerialPort->close();
@@ -80,23 +93,25 @@ bool Communication::ClosePort(){
     }
 }
 
-
-
+/*!
+ * \brief Metoda nadpisana z klasy Qthread, ustawiajaca port oraz
+ * sprawdzajaca czy port jest otwarty, nastepnie wywolujaca funkcje
+ * ReceiceData jesli dane zostaly odczytane, port zostanie zamkniety.
+ */
 void MyQThread::run()
 {
   QSerialPort   qSerialPort;
 
   _communication->SetQSerialPort(&qSerialPort);
   if (!_communication->OpenPort()) {
-     cerr << ":( Operacja otwarcia portu nie powiodla sie." << endl;
-     cerr << ":( Watek odbioru zakonczony." << endl;
+     cerr << ":OpenPort error" << endl;
      return;
   }
 
-  qDebug() << "Start watku" << endl;
+  cerr<< "Create a threat" << endl;
   _communication->ReceiveData();
   qSerialPort.close();
-  qDebug() << "Koniec watku" << endl;
+  cerr << "Destroy threat" << endl;
 }
 
 

@@ -1,5 +1,5 @@
-#ifndef BUFORDANYCH_HH
-#define BUFORDANYCH_HH
+#ifndef DATABUFFER_H
+#define DATABUFFER_H
 
 #include <string>
 #include <list>
@@ -9,9 +9,6 @@
 
 /*!
  *\brief Klasa definujaca pojecie bufforu.
- * Atrybuty klasy to:
- * strinfList - lista elementow
- * mutableMutex - mutex
  */
 class DataBuffer {
    std::list<std::string>     stringList;

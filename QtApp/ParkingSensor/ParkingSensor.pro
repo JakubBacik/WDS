@@ -12,19 +12,19 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/BuforDanych.cpp \
-    src/Odbieranie.cpp \
-    src/WatekOdbioru.cpp \
-    src/main.cpp \
-    src/mainwindow.cpp \
-    src/connectionwitharduino.cpp
+    src/CommunicationAndMyQThread.cpp \
+    src/ConnectionDialog.cpp \
+    src/DataBuffer.cpp \
+    src/Mainwindow.cpp \
+    src/RecievedData.cpp \
+    src/main.cpp
 
 HEADERS += \
-    inc/BuforDanych.hh \
-    inc/WatekOdbioru.hh \
-    inc/mainwindow.hh \
-    inc/ui_connectionwitharduino.hh \
-    inc/connectionwitharduino.hh
+    inc/CommunicationAndMyQThread.hh \
+    inc/ConnectionDialog.hh \
+    inc/DataBuffer.hh \
+    inc/Mainwindow.hh \
+    inc/ui_connectionwitharduino.hh
 
 FORMS += \
     ui/connectionwitharduino.ui \

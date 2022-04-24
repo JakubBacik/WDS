@@ -1,5 +1,5 @@
-#ifndef WATEKODBIORU_HH
-#define WATEKODBIORU_HH
+#ifndef COMMUNICATIONANDMYQTHREAD_H
+#define COMMUNICATIONANDMYQTHREAD_H
 
 #ifdef __GNUG__
   #pragma interface
@@ -8,7 +8,7 @@
 
 #include <QThread>
 #include <QSerialPort>
-#include "BuforDanych.hh"
+#include "DataBuffer.hh"
 #include <QDebug>
 
 
@@ -44,7 +44,9 @@ class Communication {
 
 
 
-
+/*!
+ * \brief Klasa definujaca wykorzystany watek, dziedziczy z klasy QThread
+ */
 class MyQThread: public QThread {
    Q_OBJECT
    Communication  *_communication = nullptr;

@@ -1,4 +1,4 @@
-#include "inc/BuforDanych.hh"
+#include "inc/DataBuffer.hh"
 
 using namespace std;
 
@@ -7,7 +7,7 @@ using namespace std;
 
 /*!
  *\brief
- * Funkcja umozliwiajaca dodawanie elementow do buffora oraz
+ * Metoda umozliwiajaca dodawanie elementow do buffora oraz
  * kontrolujaca wielkosc bufory do wielkosci MAX_SIZE_OF_LIST
  */
 void DataBuffer::AddString(const std::string &constString)
@@ -23,7 +23,7 @@ void DataBuffer::AddString(const std::string &constString)
 
 /*!
  *\brief
- * Funkcja umozliwiajaca pobierania elementu z frontu
+ * Metoda umozliwiajaca pobierania elementu z frontu
  * buffora
  */
 bool DataBuffer::GetString(std::string &temporaryString)
@@ -38,7 +38,7 @@ bool DataBuffer::GetString(std::string &temporaryString)
 
 /*!
  *\brief
- * Funkcja umozliwiajaca sprawdzenie czy wystepuja
+ * Metoda umozliwiajaca sprawdzenie czy wystepuja
  * elementy w bufforze
  */
 bool DataBuffer::IsString() const
