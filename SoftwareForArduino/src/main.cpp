@@ -1,9 +1,12 @@
 #include <Arduino.h>
+#include <CRC16.h>
 
 struct Sensor{
   int trigPin;
   int echoPin;
   };
+
+CRC16 crc;
 
 struct Sensor pinsOfSensor[4];
 
@@ -47,6 +50,40 @@ int MeasureTheDistance(int numberOfSensor) {
   return distance;
 }
 
+/*
+ * Funkcja tworzaca sume kontrolna
+ */
+unsigned short MakeFrame(String toCRC16){
+  crc.setPolynome(0x1021);
+
+  for(unsigned int i=2; i< toCRC16.length()-1; i++){
+    crc.add(toCRC16[i]);
+  }
+
+  unsigned short toReturn = crc.getCRC();
+  crc.restart();
+
+  return toReturn;
+}
+
+/*
+ * Funkcja pobierajaca dane z czujnikow ultradzwiekowych
+ */
+String GetDataFromSensor(){
+  String dataString = "";
+  dataString += "X";
+
+  for(int i=0; i<4; i++){
+    dataString += " "; 
+    dataString += MeasureTheDistance(i);
+  } 
+
+  dataString += " ";
+
+  return dataString;
+}
+
+
 void setup() {
   AddPinToTabOfSensor();
   Serial.begin(9600);
@@ -55,14 +92,10 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("!");
-  
-  for(int i=0; i<4; i++){
-    Serial.print(", ");
-    Serial.print(MeasureTheDistance(i));  
-  } 
-  
-  Serial.print(",\n");
-  Serial.flush();
-  delay(1000);
+  String toPrint = GetDataFromSensor();
+  unsigned short frame = MakeFrame(toPrint);
+  Serial.print(toPrint);
+  Serial.print(frame, HEX);
+  Serial.print("\n");
+  delay(5000);
 }
