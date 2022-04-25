@@ -36,7 +36,7 @@ SoftwareForArduino/lib
 SoftwareForArduino/platformio.ini
 SoftwareForArduino/src
 SoftwareForArduino/test
-QtApp/build-ParkingSensor-Desktop_Qt_5_12_12_GCC_64bit-Debug
+QtApp/build-ParkingSensor-Desktop_Qt_5_9_9_GCC_64bit-Debug
 QtApp/dox
 QtApp/ParkingSensor/doc
 SoftwareForArduino/.gitignore
