@@ -59,22 +59,65 @@ void MainWindow::DisconnectDevices(){
  */
 void MainWindow::closeEvent(QCloseEvent *pEvent){
     communication->Stop();
+    _isConnection=false;
     pEvent->accept();
 
 }
 
 /*!
- * \brief Metoda wywolywana cyklicznie co okreslony czas za pomoca QTimer
+ * \brief Metoda wywolywana cyklilcznie co okreslony czas za pomoca QTimer
  */
 void MainWindow::onStopertimeout(){
+    std::string stringToParse;
     std::string string;
+    int sensor[4];
+
     if(_isConnection){
         while(communication->GetConstDataBuffer().IsString()){
-            if(!communication->GetDataBuffer().GetString(string))continue;
-               std::cout << string.c_str();
+            if(!communication->GetDataBuffer().GetString(string))continue;   
+            stringToParse += string;
         }
-        std::cout << std::endl;
-    }
+        if(ParseDataFrame(stringToParse.c_str(), sensor)){
+            for(int i=0; i<4; i++){
+                _sensor[i] = sensor[i];
+            }
+        }
+     }
     _qTimer->start();
+}
+
+bool MainWindow::ParseDataFrame(const char* pDataFrame, int *sensor){
+    std::istringstream iStrm(pDataFrame);
+    char fHeader;
+    uint16_t  cRC16;
+
+    iStrm >> fHeader >> sensor[0] >> sensor[1] >> sensor[2] >> sensor[3] >> std::hex >> cRC16;
+
+    if(fHeader != 'X' || iStrm.fail()){
+        return false;
+    }
+    return cRC16 == processBuffer(pDataFrame, strlen(pDataFrame)-5);
+}
+
+uint16_t MainWindow::processByte(uint8_t data, uint16_t& crc) {
+  uint8_t i;
+
+  crc = crc ^ ((uint16_t)data << 8);
+  for (i = 0; i < 8; i++) {
+    if (crc & 0x8000)
+      crc = (crc << 1) ^ POLY;
+    else
+      crc <<= 1;
+  }
+  return crc;
+}
+
+uint16_t MainWindow::processBuffer(const char *data_p, uint16_t length) {
+  uint16_t crc= 0;
+  while(length--) {
+    processByte(*data_p++, crc);
+  }
+
+  return crc;
 }
 

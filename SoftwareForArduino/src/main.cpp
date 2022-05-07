@@ -56,7 +56,7 @@ int MeasureTheDistance(int numberOfSensor) {
 unsigned short MakeFrame(String toCRC16){
   crc.setPolynome(0x1021);
 
-  for(unsigned int i=2; i< toCRC16.length()-1; i++){
+  for(unsigned int i=0; i< toCRC16.length()-1; i++){
     crc.add(toCRC16[i]);
   }
 

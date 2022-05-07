@@ -9,6 +9,9 @@
 #include <QTimer>
 #include <QCloseEvent>
 #include <iostream>
+#include <sstream>
+#include <string>
+#define POLY 0x1021
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,10 +30,14 @@ class MainWindow : public QMainWindow
     bool _isConnection = false;
 
 public:
+    int _sensor[4] = {0,0,0,0};
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Communication *communication =new Communication();
     MyQThread* myQThread;
+    bool ParseDataFrame(const char* pDataFrame, int *sensor);
+    uint16_t processBuffer(const char *data_p, uint16_t length);
+    uint16_t processByte(uint8_t data, uint16_t& crc);
 
 private:
     Ui::MainWindow *ui;
