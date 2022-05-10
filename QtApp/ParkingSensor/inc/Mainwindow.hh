@@ -6,11 +6,14 @@
 #include "ConnectionDialog.hh"
 #include "inc/DataBuffer.hh"
 #include "inc/CommunicationAndMyQThread.hh"
+#include "inc/MyQChart.hh"
 #include <QTimer>
 #include <QCloseEvent>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <QtCharts>
+#include <QLineSeries>
 #define POLY 0x1021
 
 QT_BEGIN_NAMESPACE
@@ -30,6 +33,8 @@ class MainWindow : public QMainWindow
     bool _isConnection = false;
 
 public:
+    int second = 0;
+    MyQChart* myQChart = new MyQChart();
     int _sensor[4] = {0,0,0,0};
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -39,6 +44,7 @@ public:
     uint16_t processBuffer(const char *data_p, uint16_t length);
     uint16_t processByte(uint8_t data, uint16_t& crc);
     void showData();
+    void defaultSetUp();
 
 private:
     Ui::MainWindow *ui;

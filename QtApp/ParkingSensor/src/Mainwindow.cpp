@@ -6,13 +6,27 @@
  * \param parent - klasa bazowa
  */
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
-   setAttribute(Qt::WA_DeleteOnClose, false);
-   setAttribute(Qt::WA_QuitOnClose);
-  ui->setupUi(this);
-  connect(_qTimer, SIGNAL(timeout()), this, SLOT(onStopertimeout()));
-  _qTimer->setInterval(1000);
-  _qTimer->setSingleShot(true);
-  _qTimer->start();
+    setAttribute(Qt::WA_DeleteOnClose, false);
+    setAttribute(Qt::WA_QuitOnClose);
+    ui->setupUi(this);
+    myQChart->initChart();
+    ui->graphicsViewPlot1->setChart(myQChart->getChart(0));
+    ui->graphicsViewPlot2->setChart(myQChart->getChart(1));
+    ui->graphicsViewPlot3->setChart(myQChart->getChart(2));
+    ui->graphicsViewPlot4->setChart(myQChart->getChart(3));
+    connect(_qTimer, SIGNAL(timeout()), this, SLOT(onStopertimeout()));
+    _qTimer->setInterval(1000);
+    _qTimer->setSingleShot(true);
+    _qTimer->start();
+    static const QPointF points[4] = {
+        QPointF(10.0, 80.0),
+        QPointF(20.0, 10.0),
+        QPointF(80.0, 30.0),
+        QPointF(90.0, 70.0)
+    };
+
+    QPainter painter(this);
+    painter.drawConvexPolygon(points, 4);
 }
 
 /*!
@@ -84,8 +98,9 @@ void MainWindow::onStopertimeout(){
                 _sensor[i] = sensor[i];
             }
         }
+        showData();
      }
-    showData();
+
     _qTimer->start();
 }
 
@@ -150,9 +165,12 @@ uint16_t MainWindow::processBuffer(const char *data_p, uint16_t length) {
  * Funkcja odpowiedzialna za ustawienie wartości labelów w oknie głównym.
  */
 void MainWindow::showData(){
+    second++;
     ui->labelSensor1->setNum(_sensor[0]);
     ui->labelSensor2->setNum(_sensor[1]);
     ui->labelSensor3->setNum(_sensor[2]);
     ui->labelSensor4->setNum(_sensor[3]);
+    myQChart->updateData(_sensor, second);
 }
+
 
