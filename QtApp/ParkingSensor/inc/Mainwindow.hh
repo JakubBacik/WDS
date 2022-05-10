@@ -18,8 +18,8 @@ namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 /*!
- *\brief Definicja okna glownego
- * Klasa ta jest definicja okna glownego odpowiedzalne za wizualizacje.
+ *\brief Definicja okna głownego
+ * Klasa ta jest definicją okna głownego odpowiedzalnego za wizualizacje.
  *
  */
 
@@ -38,6 +38,7 @@ public:
     bool ParseDataFrame(const char* pDataFrame, int *sensor);
     uint16_t processBuffer(const char *data_p, uint16_t length);
     uint16_t processByte(uint8_t data, uint16_t& crc);
+    void showData();
 
 private:
     Ui::MainWindow *ui;

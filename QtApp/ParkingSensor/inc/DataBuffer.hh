@@ -8,7 +8,7 @@
 
 
 /*!
- *\brief Klasa definujaca pojecie bufforu.
+ *\brief Klasa definująca pojęcie bufforu.
  */
 class DataBuffer {
    std::list<std::string>     stringList;

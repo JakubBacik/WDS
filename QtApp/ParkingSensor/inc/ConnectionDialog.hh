@@ -15,7 +15,7 @@
 #include "ui_connectionwitharduino.hh"
 
 /*!
- * \brief Klasa definujaca wybor portu poprzez okno dialogowe
+ * \brief Klasa definująca wybór portu poprzez okno dialogowe
  */
 class ConnectionDialog : public QDialog
 {

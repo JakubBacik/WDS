@@ -7,8 +7,8 @@ using namespace std;
 
 /*!
  *\brief
- * Metoda umozliwiajaca dodawanie elementow do buffora oraz
- * kontrolujaca wielkosc bufory do wielkosci MAX_SIZE_OF_LIST
+ * Metoda umożliwiająca dodawanie elementów do buffora oraz
+ * kontrolująca wielkość buforu do wielkości MAX_SIZE_OF_LIST
  */
 void DataBuffer::AddString(const std::string &constString)
 {
@@ -23,7 +23,7 @@ void DataBuffer::AddString(const std::string &constString)
 
 /*!
  *\brief
- * Metoda umozliwiajaca pobierania elementu z frontu
+ * Metoda umożliwiająca pobranie elementu z frontu
  * buffora
  */
 bool DataBuffer::GetString(std::string &temporaryString)
@@ -38,7 +38,7 @@ bool DataBuffer::GetString(std::string &temporaryString)
 
 /*!
  *\brief
- * Metoda umozliwiajaca sprawdzenie czy wystepuja
+ * Metoda umożliwiająca sprawdzenie czy występują
  * elementy w bufforze
  */
 bool DataBuffer::IsString() const

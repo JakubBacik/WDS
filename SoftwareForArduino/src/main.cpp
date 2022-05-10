@@ -97,5 +97,5 @@ void loop() {
   Serial.print(toPrint);
   Serial.print(frame, HEX);
   Serial.print("\n");
-  delay(5000);
+  delay(1000);
 }

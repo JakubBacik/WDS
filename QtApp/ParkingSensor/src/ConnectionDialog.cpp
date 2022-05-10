@@ -2,11 +2,12 @@
 #include "inc/ConnectionDialog.hh"
 
 /*!
- * \brief Konstruktor klasy ConnectionDialog ktory ustawia Ui oraz sprawdza dostepne porty i wstawia
+ * \brief Konstruktor klasy ConnectionDialog który ustawia Ui oraz sprawdza dostępne porty i wstawia
  * to do listy.
  * \param parent - klasa bazowa
  */
 ConnectionDialog::ConnectionDialog(QWidget *parent):QDialog(parent){
+    setAttribute(Qt::WA_DeleteOnClose);
     ui.setupUi(this);
     QList<QSerialPortInfo> devices;
     devices = QSerialPortInfo::availablePorts();
@@ -18,7 +19,7 @@ ConnectionDialog::ConnectionDialog(QWidget *parent):QDialog(parent){
 }
 
 /*!
- * \brief Metoda odpowiedzialna za wyslanie wybranego portu
+ * \brief Metoda odpowiedzialna za wysłanie wybranego portu
  */
 void ConnectionDialog::setPortName(){
     QString portName = ui.PortComboBox->currentText().split("\t").first();

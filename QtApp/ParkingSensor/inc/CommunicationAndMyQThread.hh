@@ -13,7 +13,7 @@
 
 
 /*!
- *\brief Klasa definujaca polaczenie z urzadzeniem zewnetrznym
+ *\brief Klasa definująca połaczenie z urządzeniem zewnętrznym
  *
  */
 
@@ -45,7 +45,7 @@ class Communication {
 
 
 /*!
- * \brief Klasa definujaca wykorzystany watek, dziedziczy z klasy QThread
+ * \brief Klasa definujaca wykorzystany wątek, dziedziczy z klasy QThread
  */
 class MyQThread: public QThread {
    Q_OBJECT
