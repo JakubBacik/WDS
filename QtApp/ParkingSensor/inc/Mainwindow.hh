@@ -14,6 +14,9 @@
 #include <string>
 #include <QtCharts>
 #include <QLineSeries>
+#include "inc/CircleAnimation.hh"
+#include <QPixmap>
+#include "inc/FrontAnimation.hh"
 #define POLY 0x1021
 
 QT_BEGIN_NAMESPACE
@@ -33,6 +36,7 @@ class MainWindow : public QMainWindow
     bool _isConnection = false;
 
 public:
+    FrontAnimation* _frontAnimation = new FrontAnimation();
     int second = 0;
     MyQChart* myQChart = new MyQChart();
     int _sensor[4] = {0,0,0,0};
@@ -43,8 +47,11 @@ public:
     bool ParseDataFrame(const char* pDataFrame, int *sensor);
     uint16_t processBuffer(const char *data_p, uint16_t length);
     uint16_t processByte(uint8_t data, uint16_t& crc);
+    void initConfiguration();
+    void deleteConfiguration();
     void showData();
     void defaultSetUp();
+
 
 private:
     Ui::MainWindow *ui;

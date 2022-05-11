@@ -9,24 +9,11 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     setAttribute(Qt::WA_DeleteOnClose, false);
     setAttribute(Qt::WA_QuitOnClose);
     ui->setupUi(this);
-    myQChart->initChart();
-    ui->graphicsViewPlot1->setChart(myQChart->getChart(0));
-    ui->graphicsViewPlot2->setChart(myQChart->getChart(1));
-    ui->graphicsViewPlot3->setChart(myQChart->getChart(2));
-    ui->graphicsViewPlot4->setChart(myQChart->getChart(3));
+
     connect(_qTimer, SIGNAL(timeout()), this, SLOT(onStopertimeout()));
     _qTimer->setInterval(1000);
     _qTimer->setSingleShot(true);
     _qTimer->start();
-    static const QPointF points[4] = {
-        QPointF(10.0, 80.0),
-        QPointF(20.0, 10.0),
-        QPointF(80.0, 30.0),
-        QPointF(90.0, 70.0)
-    };
-
-    QPainter painter(this);
-    painter.drawConvexPolygon(points, 4);
 }
 
 /*!
@@ -171,6 +158,35 @@ void MainWindow::showData(){
     ui->labelSensor3->setNum(_sensor[2]);
     ui->labelSensor4->setNum(_sensor[3]);
     myQChart->updateData(_sensor, second);
+    ui->labelSensorView1->setPixmap(_frontAnimation->WhichRangeLOn(_sensor));
+    ui->labelSensorView34->setPixmap(_frontAnimation->WhichRangePOn(_sensor));
+}
+
+void MainWindow::initConfiguration(){
+    myQChart->initChart();
+    ui->graphicsViewPlot1->setChart(myQChart->getChart(0));
+    ui->graphicsViewPlot2->setChart(myQChart->getChart(1));
+    ui->graphicsViewPlot3->setChart(myQChart->getChart(2));
+    ui->graphicsViewPlot4->setChart(myQChart->getChart(3));
+    int w = ui->labelCar->width();
+    int h = ui->labelCar->height();
+    ui->labelCar->setPixmap(_frontAnimation->SetCurrentRange(0,0,1).scaled(w,h,Qt::KeepAspectRatio));
+    int w1= ui->labelSensorView1->width();
+    int h1 = ui->labelSensorView1->height();
+    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(w1,h1,Qt::KeepAspectRatio));
+    int w2= ui->labelSensorView34->width();
+    int h2 = ui->labelSensorView34->height();
+    ui->labelSensorView34->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(w2,h2,Qt::KeepAspectRatio));
+}
+
+
+void MainWindow::deleteConfiguration(){
+    int w1= ui->labelSensorView1->width();
+    int h1 = ui->labelSensorView1->height();
+    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(w1,h1,Qt::KeepAspectRatio));
+    int w2= ui->labelSensorView34->width();
+    int h2 = ui->labelSensorView34->height();
+    ui->labelSensorView34->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(w2,h2,Qt::KeepAspectRatio));
 }
 
 
