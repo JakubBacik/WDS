@@ -12,11 +12,11 @@ using namespace std;
  */
 void DataBuffer::AddString(const std::string &constString)
 {
-  std::lock_guard<std::mutex>  guard(mutableMutex);
+  std::lock_guard<std::mutex>  guard(_mutableMutex);
 
-  stringList.push_back(constString);
-  while (stringList.size() > MAX_SIZE_OF_LIST) {
-    stringList.pop_front();
+  _stringList.push_back(constString);
+  while (_stringList.size() > MAX_SIZE_OF_LIST) {
+    _stringList.pop_front();
   }
 }
 
@@ -28,11 +28,11 @@ void DataBuffer::AddString(const std::string &constString)
  */
 bool DataBuffer::GetString(std::string &temporaryString)
 {
-  std::lock_guard<std::mutex>  guard(mutableMutex);
+  std::lock_guard<std::mutex>  guard(_mutableMutex);
 
-  if (stringList.empty()) return false;
-  temporaryString = stringList.front();
-  stringList.pop_front();
+  if (_stringList.empty()) return false;
+  temporaryString = _stringList.front();
+  _stringList.pop_front();
   return true;
 }
 
@@ -43,6 +43,6 @@ bool DataBuffer::GetString(std::string &temporaryString)
  */
 bool DataBuffer::IsString() const
 {
-  std::lock_guard<std::mutex>  Guard(mutableMutex);
-  return !stringList.empty();
+  std::lock_guard<std::mutex>  Guard(_mutableMutex);
+  return !_stringList.empty();
 }

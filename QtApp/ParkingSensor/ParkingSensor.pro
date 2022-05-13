@@ -18,7 +18,6 @@ SOURCES += \
     src/FrontAnimation.cpp \
     src/Mainwindow.cpp \
     src/MyQChart.cpp \
-    src/RecievedData.cpp \
     src/main.cpp
 
 HEADERS += \

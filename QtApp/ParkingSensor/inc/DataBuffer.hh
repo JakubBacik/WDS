@@ -11,8 +11,8 @@
  *\brief Klasa definująca pojęcie bufforu.
  */
 class DataBuffer {
-   std::list<std::string>     stringList;
-   mutable std::mutex         mutableMutex;
+   std::list<std::string>     _stringList;
+   mutable std::mutex         _mutableMutex;
   
   public:
 

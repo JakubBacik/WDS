@@ -27,6 +27,6 @@ int main(int argc, char *argv[])
     w.show();
 
     int toReturn = a.exec();
-    w.myQThread->wait();
+    w._myQThread->wait();
     return toReturn;
 }

@@ -37,13 +37,16 @@ class MainWindow : public QMainWindow
 
 public:
     FrontAnimation* _frontAnimation = new FrontAnimation();
-    int second = 0;
-    MyQChart* myQChart = new MyQChart();
+    MyQChart* _myQChart = new MyQChart();
+    Communication* _communication =new Communication();
+    MyQThread* _myQThread;
+    int number1 = 0;
+    int number2 = 0;
     int _sensor[4] = {0,0,0,0};
+    int _second = 0;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    Communication *communication =new Communication();
-    MyQThread* myQThread;
+
     bool ParseDataFrame(const char* pDataFrame, int *sensor);
     uint16_t processBuffer(const char *data_p, uint16_t length);
     uint16_t processByte(uint8_t data, uint16_t& crc);

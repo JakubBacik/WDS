@@ -1,5 +1,13 @@
 #include "inc/FrontAnimation.hh"
 
+/*!
+ * \brief FrontAnimation::SetCurrentRange
+ * Metoda odpowiedzialna za zwrócenie odpowiedniej bitmapy poprzez odpowiednią konfiguracje parametró
+ * \param number - numer wiersza w tabeli
+ * \param numberTwo - numer kolumny w tabeli
+ * \param whichTable - która tabela
+ * \return zwrócenie odpowiedniej bitmapy
+ */
 QPixmap FrontAnimation::SetCurrentRange(int number, int numberTwo, int whichTable){
     const char* DefaultSetUp[3] ={":/View/img/car/caricon.png", ":/View/img/sensorView/SensorViewDefaultL1.png", ":/View/img/sensorView/SensorViewDefaultP1.png"};
     const char* SetUpRangeLeft[6][6]= {
@@ -42,6 +50,11 @@ QPixmap FrontAnimation::SetCurrentRange(int number, int numberTwo, int whichTabl
    }
 
 }
+
+/*!
+ * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 0.
+ * W efekcie tego ulegnie zapalenie odpowiedniego pola.
+ */
 QPixmap FrontAnimation::WhichRangeLOn(int _sensor[4]){
     int number = CheckSecondSensor(_sensor[1]);
     if(_sensor[0] <= 50 && _sensor[0] > 40){
@@ -67,6 +80,10 @@ QPixmap FrontAnimation::WhichRangeLOn(int _sensor[4]){
 
 }
 
+/*!
+ * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 4.
+ * W efekcie tego ulegnie zapalenie odpowiedniego pola.
+ */
 QPixmap FrontAnimation::WhichRangePOn(int _sensor[4]){
     int number = CheckSecondSensor(_sensor[2]);
     if(_sensor[3] <= 50 && _sensor[3] > 40){
@@ -89,6 +106,10 @@ QPixmap FrontAnimation::WhichRangePOn(int _sensor[4]){
     return SetCurrentRange(2, 0, 1);
 }
 
+
+/*!
+ * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 2 lub 3.
+ */
 int FrontAnimation::CheckSecondSensor(int number){
     if(number <= 50 && number > 40){
         return 1;

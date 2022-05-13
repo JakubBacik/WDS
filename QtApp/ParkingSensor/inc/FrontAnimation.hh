@@ -4,11 +4,16 @@
 #include <QLabel>
 #include <QPixmap>
 #include <iostream>
+
+/*!
+ * \brief The FrontAnimation class
+ * Klasa definująca obsługę podświetlania pól przed samochodem.
+ */
 class FrontAnimation{
 public:
     QPixmap SetCurrentRange(int number, int numberTwo, int whichTable);
-    QPixmap WhichRangeLOn(int _senor[4]);
-    QPixmap WhichRangePOn(int _senor[4]);
+    QPixmap WhichRangeLOn(int senor[4]);
+    QPixmap WhichRangePOn(int senor[4]);
     int CheckSecondSensor(int number);
 
 };

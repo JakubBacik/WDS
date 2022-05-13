@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     setAttribute(Qt::WA_DeleteOnClose, false);
     setAttribute(Qt::WA_QuitOnClose);
     ui->setupUi(this);
-
+    initConfiguration();
     connect(_qTimer, SIGNAL(timeout()), this, SLOT(onStopertimeout()));
     _qTimer->setInterval(1000);
     _qTimer->setSingleShot(true);
@@ -40,11 +40,12 @@ void MainWindow::on_actionConfiguration_triggered()
  * \param portName - nazwa portu
  */
 void MainWindow::ConnectDevices(QString portName){
-    communication->Start();
-    communication->SetPortName(portName.toStdString());
-    myQThread = new MyQThread(communication);
-    myQThread->start();
+    _communication->Start();
+    _communication->SetPortName(portName.toStdString());
+    _myQThread = new MyQThread(_communication);
+    _myQThread->start();
     _isConnection=true;
+    ui->MainWindowStatusBar->showMessage("Device has been connected", 2000);
 
 }
 
@@ -52,8 +53,10 @@ void MainWindow::ConnectDevices(QString portName){
  * \brief Metoda wywołana po naciśnięciu przycisku rozłacz w oknie dialogowym
  */
 void MainWindow::DisconnectDevices(){
-    communication->Stop();
+    _communication->Stop();
     _isConnection=false;
+    deleteConfiguration();
+    ui->MainWindowStatusBar->showMessage("Device has been disconnected", 2000);
 }
 
 /*!
@@ -61,7 +64,7 @@ void MainWindow::DisconnectDevices(){
  * \param pEvent
  */
 void MainWindow::closeEvent(QCloseEvent *pEvent){
-    communication->Stop();
+    _communication->Stop();
     _isConnection=false;
     pEvent->accept();
 
@@ -76,8 +79,8 @@ void MainWindow::onStopertimeout(){
     int sensor[4];
 
     if(_isConnection){
-        while(communication->GetConstDataBuffer().IsString()){
-            if(!communication->GetDataBuffer().GetString(string))continue;   
+        while(_communication->GetConstDataBuffer().IsString()){
+            if(!_communication->GetDataBuffer().GetString(string))continue;
             stringToParse += string;
         }
         if(ParseDataFrame(stringToParse.c_str(), sensor)){
@@ -149,44 +152,49 @@ uint16_t MainWindow::processBuffer(const char *data_p, uint16_t length) {
 
 /*!
  * \brief MainWindow::showData
- * Funkcja odpowiedzialna za ustawienie wartości labelów w oknie głównym.
+ * Metoda odpowiedzialna za ustawienie wartości labelów w oknie głównym.
  */
 void MainWindow::showData(){
-    second++;
+    _second++;
     ui->labelSensor1->setNum(_sensor[0]);
     ui->labelSensor2->setNum(_sensor[1]);
     ui->labelSensor3->setNum(_sensor[2]);
     ui->labelSensor4->setNum(_sensor[3]);
-    myQChart->updateData(_sensor, second);
+    _myQChart->updateData(_sensor, _second);
     ui->labelSensorView1->setPixmap(_frontAnimation->WhichRangeLOn(_sensor));
-    ui->labelSensorView34->setPixmap(_frontAnimation->WhichRangePOn(_sensor));
+    ui->labelSensorView2->setPixmap(_frontAnimation->WhichRangePOn(_sensor));
+
+
 }
 
+/*!
+ * \brief MainWindow::initConfiguration
+ * Metoda odpowiedzialna za zainicjowanie wykresów oraz bitmap
+ */
 void MainWindow::initConfiguration(){
-    myQChart->initChart();
-    ui->graphicsViewPlot1->setChart(myQChart->getChart(0));
-    ui->graphicsViewPlot2->setChart(myQChart->getChart(1));
-    ui->graphicsViewPlot3->setChart(myQChart->getChart(2));
-    ui->graphicsViewPlot4->setChart(myQChart->getChart(3));
-    int w = ui->labelCar->width();
-    int h = ui->labelCar->height();
-    ui->labelCar->setPixmap(_frontAnimation->SetCurrentRange(0,0,1).scaled(w,h,Qt::KeepAspectRatio));
-    int w1= ui->labelSensorView1->width();
-    int h1 = ui->labelSensorView1->height();
-    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(w1,h1,Qt::KeepAspectRatio));
-    int w2= ui->labelSensorView34->width();
-    int h2 = ui->labelSensorView34->height();
-    ui->labelSensorView34->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(w2,h2,Qt::KeepAspectRatio));
+    _myQChart->initChart();
+    ui->graphicsViewPlot1->setChart(_myQChart->getChart(0));
+    ui->graphicsViewPlot2->setChart(_myQChart->getChart(1));
+    ui->graphicsViewPlot3->setChart(_myQChart->getChart(2));
+    ui->graphicsViewPlot4->setChart(_myQChart->getChart(3));
+    ui->labelCar->setPixmap(_frontAnimation->SetCurrentRange(0,0,1).scaled(ui->labelCar->width(), ui->labelCar->height(), Qt::KeepAspectRatio));
+    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(ui->labelSensorView1->width(), ui->labelSensorView1->height(), Qt::KeepAspectRatio));
+    ui->labelSensorView2->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(ui->labelSensorView2->width(), ui->labelSensorView2->height(), Qt::KeepAspectRatio));
 }
 
-
+/*!
+ * \brief MainWindow::deleteConfiguration
+ * Metoda odpowiedzialna za wyczyszczenie wykresów z danych oraz ustawie podstawowych bitmap
+ */
 void MainWindow::deleteConfiguration(){
-    int w1= ui->labelSensorView1->width();
-    int h1 = ui->labelSensorView1->height();
-    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(w1,h1,Qt::KeepAspectRatio));
-    int w2= ui->labelSensorView34->width();
-    int h2 = ui->labelSensorView34->height();
-    ui->labelSensorView34->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(w2,h2,Qt::KeepAspectRatio));
+    ui->labelSensor1->setNum(0);
+    ui->labelSensor2->setNum(0);
+    ui->labelSensor3->setNum(0);
+    ui->labelSensor4->setNum(0);
+    _second=0;
+    _myQChart->clearChart();
+    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(ui->labelSensorView1->width(), ui->labelSensorView1->height(), Qt::KeepAspectRatio));
+    ui->labelSensorView2->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(ui->labelSensorView2->width(), ui->labelSensorView2->height(), Qt::KeepAspectRatio));
 }
 
 

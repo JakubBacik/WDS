@@ -12,7 +12,7 @@ ConnectionDialog::ConnectionDialog(QWidget *parent):QDialog(parent){
     QList<QSerialPortInfo> devices;
     devices = QSerialPortInfo::availablePorts();
     for(QSerialPortInfo devicesTab : devices){
-        ui.PortComboBox->addItem(devicesTab.portName() + "\t" + devicesTab.description());
+        ui.PortComboBox->addItem(devicesTab.portName() + " " + devicesTab.description());
     }
     connect(ui.ConnectPushButton, SIGNAL(clicked()), this, SLOT(setPortName()));
     connect(ui.DisconnectPushButton, SIGNAL(clicked()), parent, SLOT(DisconnectDevices()));
@@ -22,7 +22,7 @@ ConnectionDialog::ConnectionDialog(QWidget *parent):QDialog(parent){
  * \brief Metoda odpowiedzialna za wysłanie wybranego portu
  */
 void ConnectionDialog::setPortName(){
-    QString portName = ui.PortComboBox->currentText().split("\t").first();
+    QString portName = ui.PortComboBox->currentText().split(" ").first();
     emit SendTo(portName);
 }
 

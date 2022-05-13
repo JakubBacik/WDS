@@ -4,17 +4,21 @@
 #include <QLineSeries>
 #include <QValueAxis>
 
+/*!
+ * \brief The MyQChart class
+ * Klasa definująca obsługe, inicjalizacje wykresów
+ */
 class MyQChart{
-    QLineSeries *series[4];
-    QChart *chart[4];
-    QValueAxis *axisX[4];
-    QValueAxis *axisY[4];
+    QLineSeries* _series[4];
+    QChart* _chart[4];
+    QValueAxis* _axisX[4];
+    QValueAxis* _axisY[4];
 public:
     ~MyQChart();
     void initChart();
     void updateData(int sensor[4], int second);
-    QChart* getChart(int number){return chart[number];};
-
+    QChart* getChart(int number){return _chart[number];};
+    void clearChart();
 };
 
 #endif // MYQCHART_HH
