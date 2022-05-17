@@ -91,7 +91,7 @@
            <item>
             <widget class="QPushButton" name="Connect">
              <property name="text">
-              <string>Connect</string>
+              <string>Połącz</string>
              </property>
             </widget>
            </item>
@@ -111,7 +111,7 @@
            <item>
             <widget class="QPushButton" name="Disconnect">
              <property name="text">
-              <string>Disconnect</string>
+              <string>Rozłącz</string>
              </property>
             </widget>
            </item>

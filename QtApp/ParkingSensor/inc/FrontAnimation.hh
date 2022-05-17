@@ -6,8 +6,7 @@
 #include <iostream>
 
 /*!
- * \brief The FrontAnimation class
- * Klasa definująca obsługę podświetlania pól przed samochodem.
+ * \brief Klasa definująca obsługę podświetlania pól przed samochodem.
  */
 class FrontAnimation{
 public:

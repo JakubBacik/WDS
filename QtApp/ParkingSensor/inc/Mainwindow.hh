@@ -36,6 +36,7 @@ class MainWindow : public QMainWindow
     bool _isConnection = false;
 
 public:
+    QTranslator *translator = new QTranslator();
     FrontAnimation* _frontAnimation = new FrontAnimation();
     MyQChart* _myQChart = new MyQChart();
     Communication* _communication =new Communication();
@@ -44,6 +45,7 @@ public:
     int number2 = 0;
     int _sensor[4] = {0,0,0,0};
     int _second = 0;
+    int _numberOfDialogWindow = 0;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -55,7 +57,6 @@ public:
     void showData();
     void defaultSetUp();
 
-
 private:
     Ui::MainWindow *ui;
     ConnectionDialog *_connectionDialog;
@@ -64,10 +65,15 @@ public slots:
     void ConnectDevices(QString portName);
     void DisconnectDevices();
     void onStopertimeout();
+    void ChangeNumber(){_numberOfDialogWindow =0;}
 
 private slots:
     void on_actionConfiguration_triggered();
+    void on_actionPolski_triggered();
+    void on_actionAngielski_triggered();
+
 protected:
     void closeEvent(QCloseEvent *pEvent)override;
+
 };
 #endif // MAINWINDOW_H

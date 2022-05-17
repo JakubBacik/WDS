@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="translate">
+    <file>translation/ParkingSensor_en_150.qm</file>
+  </qresource>
+</RCC>

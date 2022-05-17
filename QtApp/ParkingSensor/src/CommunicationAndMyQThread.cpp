@@ -15,7 +15,7 @@
 using namespace std;
 
 /*!
- * \brief Metoda odpowiedzialna za otwarcie portu
+ * Metoda odpowiedzialna za otwarcie portu
  * \param[in] serialPort - nazwa portu, ktory ma zostać otwarty
  * \retval true - jeśli zostanie otwarte połączenie
  * \retval false - w przypdaku przeciwnym
@@ -42,7 +42,7 @@ bool Communication::OpenPort(const char *serialPort)
 }
 
 /*!
- * \brief Metoda odpowiedzialna za pobranie jednej linii danych
+ * Metoda odpowiedzialna za pobranie jednej linii danych
  * z wybranego portu/
  * \retval false - jeśli nie ma dostępnych danych
  * \retval true - w przeciwnym przypadku
@@ -68,7 +68,7 @@ bool Communication::GetOneLine()
 
 
 /*!
- * \brief Metoda odpowiadajaca za pobieranie danych gdy została
+ * Metoda odpowiadajaca za pobieranie danych gdy została
  * ustawiona flaga oraz są dostępne dane
  */
 void Communication::ReceiveData()
@@ -80,7 +80,7 @@ void Communication::ReceiveData()
 }
 
 /*!
- * \brief Metoda odpowiedzialna za zamknięcie portu
+ * Metoda odpowiedzialna za zamknięcie portu
  * \retval false - jeśli port nie został otwarty
  * \retval true - jeśli port został zamknięty
  */
@@ -94,7 +94,7 @@ bool Communication::ClosePort(){
 }
 
 /*!
- * \brief Metoda nadpisana z klasy Qthread, ustawiająca port oraz
+ * Metoda nadpisana z klasy Qthread, ustawiająca port oraz
  * sprawdzająca czy port jest otwarty, następnie wywołujaca funkcje
  * ReceiceData jeśli dane zostały odczytane, port zostanie zamknięty.
  */
@@ -104,14 +104,10 @@ void MyQThread::run()
 
   _communication->SetQSerialPort(&qSerialPort);
   if (!_communication->OpenPort()) {
-     cerr << ":OpenPort error" << endl;
      return;
   }
-
-  cerr<< "Create a threat" << endl;
   _communication->ReceiveData();
   qSerialPort.close();
-  cerr << "Destroy threat" << endl;
 }
 
 

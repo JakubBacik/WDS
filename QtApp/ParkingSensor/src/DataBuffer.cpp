@@ -2,13 +2,12 @@
 
 using namespace std;
 
-
 #define  MAX_SIZE_OF_LIST  10
 
 /*!
- *\brief
  * Metoda umożliwiająca dodawanie elementów do buffora oraz
  * kontrolująca wielkość buforu do wielkości MAX_SIZE_OF_LIST
+ * \param[in] constString - string który zostanie dodany
  */
 void DataBuffer::AddString(const std::string &constString)
 {
@@ -22,9 +21,9 @@ void DataBuffer::AddString(const std::string &constString)
 
 
 /*!
- *\brief
  * Metoda umożliwiająca pobranie elementu z frontu
  * buffora
+ * \param[in] temporaryString - zwrócenie stringa z bufforu
  */
 bool DataBuffer::GetString(std::string &temporaryString)
 {
@@ -37,7 +36,6 @@ bool DataBuffer::GetString(std::string &temporaryString)
 }
 
 /*!
- *\brief
  * Metoda umożliwiająca sprawdzenie czy występują
  * elementy w bufforze
  */

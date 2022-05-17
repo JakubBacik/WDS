@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 /*!
- * \brief Konstruktor klasy MainWindow w którym ustawiane jest ui oraz skonfigurowany został timer
+ * Konstruktor klasy MainWindow w którym ustawiane jest ui oraz skonfigurowany został timer
  * \param parent - klasa bazowa
  */
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
 }
 
 /*!
- * \brief Destruktor klasy MainWindow
+ * Destruktor klasy MainWindow
  */
 MainWindow::~MainWindow()
 {
@@ -25,18 +25,21 @@ MainWindow::~MainWindow()
 }
 
 /*!
- * \brief Metoda wywołana gdy zostanie naciśnięty przycisk
- * na pasku okna.
+ * Metoda wywołana gdy zostanie naciśnięty przycisk polaczenia na pasku.
  */
 void MainWindow::on_actionConfiguration_triggered()
 {
-    _connectionDialog = new ConnectionDialog(this);
-    _connectionDialog->show();
-    connect(_connectionDialog, SIGNAL(SendTo(QString)), this, SLOT(ConnectDevices(QString)));
+    if(_numberOfDialogWindow == 0){
+        _connectionDialog = new ConnectionDialog(this);
+        _connectionDialog->show();
+        connect(_connectionDialog, SIGNAL(SendTo(QString)), this, SLOT(ConnectDevices(QString)));
+        connect(_connectionDialog, SIGNAL(ChangeNumberOfWindow()), this, SLOT(ChangeNumber()));
+        _numberOfDialogWindow = 1;
+    }
 }
 
 /*!
- * \brief Metoda wywołana po naciśnięciu przycisku połacz w oknie dialogowym
+ * Metoda wywołana po naciśnięciu przycisku połacz w oknie dialogowym
  * \param portName - nazwa portu
  */
 void MainWindow::ConnectDevices(QString portName){
@@ -45,22 +48,22 @@ void MainWindow::ConnectDevices(QString portName){
     _myQThread = new MyQThread(_communication);
     _myQThread->start();
     _isConnection=true;
-    ui->MainWindowStatusBar->showMessage("Device has been connected", 2000);
+    ui->MainWindowStatusBar->showMessage(tr("Urządzenie zostało połączone"), 2000);
 
 }
 
 /*!
- * \brief Metoda wywołana po naciśnięciu przycisku rozłacz w oknie dialogowym
+ * Metoda wywołana po naciśnięciu przycisku rozłącz w oknie dialogowym
  */
 void MainWindow::DisconnectDevices(){
     _communication->Stop();
     _isConnection=false;
     deleteConfiguration();
-    ui->MainWindowStatusBar->showMessage("Device has been disconnected", 2000);
+    ui->MainWindowStatusBar->showMessage(tr("Urządzenie zostało rozłączone"), 2000);
 }
 
 /*!
- * \brief Metoda wywoływana podczas zamnkniecia okna
+ * Metoda wywoływana podczas zamnknięcia okna
  * \param pEvent
  */
 void MainWindow::closeEvent(QCloseEvent *pEvent){
@@ -71,7 +74,7 @@ void MainWindow::closeEvent(QCloseEvent *pEvent){
 }
 
 /*!
- * \brief Metoda wywoływana cyklicznie co określony czas za pomoca QTimer
+ * Metoda wywoływana cyklicznie co określony czas za pomoca QTimer
  */
 void MainWindow::onStopertimeout(){
     std::string stringToParse;
@@ -95,7 +98,7 @@ void MainWindow::onStopertimeout(){
 }
 
 /*!
- * \brief Metoda odpowiedzialna za parsowanie danych wejściowych.
+ * Metoda odpowiedzialna za parsowanie danych wejściowych.
  * \param pDataFrame - dane wejściowe
  * \param sensor - tablica sensorów
  * \retval false - jeśli dane wejściowe nie są w formie zakładanej ramki
@@ -115,7 +118,6 @@ bool MainWindow::ParseDataFrame(const char* pDataFrame, int *sensor){
 }
 
 /*!
- * \brief MainWindow::processByte
  * Funkcja odpowiedzialna za konwersje jednego znaku.
  * \param data - jeden znak do konwersji
  * \param crc - wartość po konwersji
@@ -135,7 +137,6 @@ uint16_t MainWindow::processByte(uint8_t data, uint16_t& crc) {
 }
 
 /*!
- * \brief MainWindow::processBuffer
  * Funkcja odpowiedzialna za obliczenie sumy kontrolnej
  * \param data_p - łancuch znakowy
  * \param length - długość łancucha zankowego
@@ -151,7 +152,6 @@ uint16_t MainWindow::processBuffer(const char *data_p, uint16_t length) {
 }
 
 /*!
- * \brief MainWindow::showData
  * Metoda odpowiedzialna za ustawienie wartości labelów w oknie głównym.
  */
 void MainWindow::showData(){
@@ -168,7 +168,6 @@ void MainWindow::showData(){
 }
 
 /*!
- * \brief MainWindow::initConfiguration
  * Metoda odpowiedzialna za zainicjowanie wykresów oraz bitmap
  */
 void MainWindow::initConfiguration(){
@@ -183,7 +182,6 @@ void MainWindow::initConfiguration(){
 }
 
 /*!
- * \brief MainWindow::deleteConfiguration
  * Metoda odpowiedzialna za wyczyszczenie wykresów z danych oraz ustawie podstawowych bitmap
  */
 void MainWindow::deleteConfiguration(){
@@ -197,4 +195,29 @@ void MainWindow::deleteConfiguration(){
     ui->labelSensorView2->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(ui->labelSensorView2->width(), ui->labelSensorView2->height(), Qt::KeepAspectRatio));
 }
 
+
+/*!
+ * Metoda która zostanie wywołana po naciśnięciu przycisku z menu wysuwanego
+ * zmniejacy jezyk na polski
+ */
+void MainWindow::on_actionPolski_triggered()
+{
+    qApp->removeTranslator(translator);
+    ui->retranslateUi(this);
+    initConfiguration();
+}
+/*!
+* Metoda która zostanie wywołana po naciśnięciu przycisku z menu wysuwanego
+* zmniejacy jezyk na angielski
+*/
+void MainWindow::on_actionAngielski_triggered()
+{
+    if(translator->load(":/translate/translation/ParkingSensor_en_150.qm", ".")){
+        qApp->installTranslator(translator);
+    }else{
+        std::cerr << "Plik nie został załadowany" << std::endl;
+    }
+    ui->retranslateUi(this); 
+    initConfiguration();
+}
 

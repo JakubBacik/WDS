@@ -1,11 +1,10 @@
 #include "inc/FrontAnimation.hh"
 
 /*!
- * \brief FrontAnimation::SetCurrentRange
  * Metoda odpowiedzialna za zwrócenie odpowiedniej bitmapy poprzez odpowiednią konfiguracje parametró
- * \param number - numer wiersza w tabeli
- * \param numberTwo - numer kolumny w tabeli
- * \param whichTable - która tabela
+ * \param[in] number - numer wiersza w tabeli
+ * \param[in] numberTwo - numer kolumny w tabeli
+ * \param[in] whichTable - która tabela
  * \return zwrócenie odpowiedniej bitmapy
  */
 QPixmap FrontAnimation::SetCurrentRange(int number, int numberTwo, int whichTable){
@@ -54,6 +53,8 @@ QPixmap FrontAnimation::SetCurrentRange(int number, int numberTwo, int whichTabl
 /*!
  * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 0.
  * W efekcie tego ulegnie zapalenie odpowiedniego pola.
+ * \param[in] _sensor - tablica zawierająca dane z czujników
+ * \return zwrócenie odpowiedniej mapy w zależności od czujnika 1
  */
 QPixmap FrontAnimation::WhichRangeLOn(int _sensor[4]){
     int number = CheckSecondSensor(_sensor[1]);
@@ -83,6 +84,8 @@ QPixmap FrontAnimation::WhichRangeLOn(int _sensor[4]){
 /*!
  * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 4.
  * W efekcie tego ulegnie zapalenie odpowiedniego pola.
+ * \param[in] _sensor - tablica zawierająca dane z czujników
+ * \return zwrócenie odpowiedniej mapy w zależności od czujnika 4
  */
 QPixmap FrontAnimation::WhichRangePOn(int _sensor[4]){
     int number = CheckSecondSensor(_sensor[2]);
@@ -109,6 +112,8 @@ QPixmap FrontAnimation::WhichRangePOn(int _sensor[4]){
 
 /*!
  * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 2 lub 3.
+ * \param[in] number - liczba odpowiadająca odległości jednego czujnika
+ * \return zwrócenie odpowiedniej wartości w zależności od czujnika 2 lub 3
  */
 int FrontAnimation::CheckSecondSensor(int number){
     if(number <= 50 && number > 40){

@@ -14,12 +14,12 @@
 
 /*!
  *\brief Klasa definująca połaczenie z urządzeniem zewnętrznym
- *
+ * Korzysta z QSerialPort.
  */
 
 class Communication {
      QSerialPort  *_qSerialPort = new QSerialPort();
-     DataBuffer   _dataBuffer;
+     DataBuffer    _dataBuffer;
      bool          _continue = true;
      std::string   _portName;
   

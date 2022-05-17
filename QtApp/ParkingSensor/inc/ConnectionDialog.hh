@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtSerialPort>
 #include <QDialog>
+#include <QCloseEvent>
 #include "ui_connectionwitharduino.hh"
 
 /*!
@@ -28,9 +29,11 @@ private:
 
 signals:
     void SendTo(QString portName);
+    void ChangeNumberOfWindow();
 
 private slots:
     void setPortName();
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // UI_CONNECTIONWITHARDUINO_H

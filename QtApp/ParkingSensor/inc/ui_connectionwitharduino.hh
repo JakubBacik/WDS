@@ -130,10 +130,10 @@ public:
 
     void retranslateUi(QDialog *ConnectionWithArduino)
     {
-        ConnectionWithArduino->setWindowTitle(QApplication::translate("ConnectionWithArduino", "Dialog", nullptr));
+        ConnectionWithArduino->setWindowTitle(QApplication::translate("ConnectionWithArduino", "Okno połączenia", nullptr));
         PortLabel->setText(QApplication::translate("ConnectionWithArduino", "Port:", nullptr));
-        ConnectPushButton->setText(QApplication::translate("ConnectionWithArduino", "Connect", nullptr));
-        DisconnectPushButton->setText(QApplication::translate("ConnectionWithArduino", "Disconnect", nullptr));
+        ConnectPushButton->setText(QApplication::translate("ConnectionWithArduino", "Połącz", nullptr));
+        DisconnectPushButton->setText(QApplication::translate("ConnectionWithArduino", "Rozłącz", nullptr));
     } // retranslateUi
 
 };

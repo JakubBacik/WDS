@@ -1,23 +1,26 @@
 #include "inc/MyQChart.hh"
 
 /*!
- * \brief MyQChart::initChart
+ * \brief
  * Metoda inicjująca cztery wykresy.
  */
 void MyQChart::initChart(){
     for(int i=0; i<4; i++){
         _series[i] = new QLineSeries();
         _chart[i] = new QChart();
-        _chart[i]->setTitle("Sensor " + QString::number(i+1));
+        QString title = QObject::tr("Czujnik %1").arg(i+1);
+        _chart[i]->setTitle(title);
         _axisY[i] = new QValueAxis();
         _axisY[i]->setRange(0,500);
         _axisY[i]->setTickCount(5);
-        _axisY[i]->setTitleText("Length [cm]");
+        QString axisYTitleText = QObject::tr("Odległość [cm]");
+        _axisY[i]->setTitleText(axisYTitleText);
         _axisX[i] = new QValueAxis();
         _axisX[i]->setRange(-4,0);
         _axisX[i]->setRange(-20,0);
         _axisX[i]->setTickCount(1);
-        _axisX[i]->setTitleText("Time [s]");
+        QString axisXTitleText = QObject::tr("Czas [s]");
+        _axisX[i]->setTitleText(axisXTitleText);
     }
 
     for(int i=0; i<4; i++){
@@ -35,7 +38,7 @@ void MyQChart::initChart(){
 }
 
 /*!
- * \brief MyQChart::updateData
+ * \brief
  * Metoda aktualizująca dane w czterech wykresach
  * \param sensor - tablica zawierająca cztery wartości z czujników
  * \param second - liczba sekund od momentu włączenia
@@ -54,7 +57,7 @@ void MyQChart::updateData(int sensor[4], int second){
 }
 
 /*!
- * \brief MyQChart::~MyQChart
+ * \brief
  * Deskruktor klasy
  */
 MyQChart::~MyQChart(){
@@ -67,7 +70,7 @@ MyQChart::~MyQChart(){
 }
 
 /*!
- * \brief MyQChart::clearChart
+ * \brief
  * Metoda odpowiedzialna za wyczyszczenie danych w wykresie
  */
 void MyQChart::clearChart(){
@@ -77,5 +80,8 @@ void MyQChart::clearChart(){
         updateData(tab, j);
     }
 }
+
+
+
 
 
