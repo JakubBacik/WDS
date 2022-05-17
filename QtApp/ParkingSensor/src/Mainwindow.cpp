@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
     initConfiguration();
     connect(_qTimer, SIGNAL(timeout()), this, SLOT(onStopertimeout()));
-    _qTimer->setInterval(1000);
+    _qTimer->setInterval(100);
     _qTimer->setSingleShot(true);
     _qTimer->start();
 }
@@ -92,6 +92,8 @@ void MainWindow::onStopertimeout(){
             }
         }
         showData();
+
+
      }
 
     _qTimer->start();
@@ -156,11 +158,15 @@ uint16_t MainWindow::processBuffer(const char *data_p, uint16_t length) {
  */
 void MainWindow::showData(){
     _second++;
+
     ui->labelSensor1->setNum(_sensor[0]);
     ui->labelSensor2->setNum(_sensor[1]);
     ui->labelSensor3->setNum(_sensor[2]);
     ui->labelSensor4->setNum(_sensor[3]);
-    _myQChart->updateData(_sensor, _second);
+    if(((_second%10) ==0)){
+        std::cerr<<_second << std::endl;
+        _myQChart->updateData(_sensor, _second/10);
+    }
     ui->labelSensorView1->setPixmap(_frontAnimation->WhichRangeLOn(_sensor));
     ui->labelSensorView2->setPixmap(_frontAnimation->WhichRangePOn(_sensor));
 
