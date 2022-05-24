@@ -15,8 +15,9 @@
 using namespace std;
 
 /*!
+ * \brief Otwarcie portu
  * Metoda odpowiedzialna za otwarcie portu
- * \param[in] serialPort - nazwa portu, ktory ma zostać otwarty
+ * \param[in] serialPort - nazwa portu, ktory ma zostać otwarty np. tty
  * \retval true - jeśli zostanie otwarte połączenie
  * \retval false - w przypdaku przeciwnym
  */
@@ -42,8 +43,9 @@ bool Communication::OpenPort(const char *serialPort)
 }
 
 /*!
+ * \brief Pobranie jednej linii
  * Metoda odpowiedzialna za pobranie jednej linii danych
- * z wybranego portu/
+ * z wybranego portu
  * \retval false - jeśli nie ma dostępnych danych
  * \retval true - w przeciwnym przypadku
  */
@@ -68,6 +70,7 @@ bool Communication::GetOneLine()
 
 
 /*!
+ * \brief Otrzymane dane
  * Metoda odpowiadajaca za pobieranie danych gdy została
  * ustawiona flaga oraz są dostępne dane
  */
@@ -80,6 +83,7 @@ void Communication::ReceiveData()
 }
 
 /*!
+ * \brief Zamykanie portu
  * Metoda odpowiedzialna za zamknięcie portu
  * \retval false - jeśli port nie został otwarty
  * \retval true - jeśli port został zamknięty
@@ -94,7 +98,8 @@ bool Communication::ClosePort(){
 }
 
 /*!
- * Metoda nadpisana z klasy Qthread, ustawiająca port oraz
+ * \brief Uruchomienie portu
+ * Metoda przeciążona z klasy Qthread, ustawiająca port oraz
  * sprawdzająca czy port jest otwarty, następnie wywołujaca funkcje
  * ReceiceData jeśli dane zostały odczytane, port zostanie zamknięty.
  */

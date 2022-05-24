@@ -1,7 +1,8 @@
 #include "inc/FrontAnimation.hh"
 
 /*!
- * Metoda odpowiedzialna za zwrócenie odpowiedniej bitmapy poprzez odpowiednią konfiguracje parametró
+ * \brief Ustawienie odpowiedniej bitmapy
+ * Metoda odpowiedzialna za zwrócenie odpowiedniej bitmapy poprzez odpowiednią konfiguracje argumentów
  * \param[in] number - numer wiersza w tabeli
  * \param[in] numberTwo - numer kolumny w tabeli
  * \param[in] whichTable - która tabela
@@ -9,6 +10,7 @@
  */
 QPixmap FrontAnimation::SetCurrentRange(int number, int numberTwo, int whichTable){
     const char* DefaultSetUp[3] ={":/View/img/car/caricon.png", ":/View/img/sensorView/SensorViewDefaultL1.png", ":/View/img/sensorView/SensorViewDefaultP1.png"};
+
     const char* SetUpRangeLeft[6][6]= {
                                    {":/View/img/sensorView/SensorViewDefaultL2.png",":/View/img/sensorView/SensorViewDefaultL3.png", ":/View/img/sensorView/SensorViewDefaultL4.png",":/View/img/sensorView/SensorViewDefaultL5.png",
                                     ":/View/img/sensorView/SensorViewDefaultL6.png",":/View/img/sensorView/SensorViewDefaultL7.png"},
@@ -51,6 +53,7 @@ QPixmap FrontAnimation::SetCurrentRange(int number, int numberTwo, int whichTabl
 }
 
 /*!
+ * \brief Sprawdzenie zakresu dla czujnika z lewej strony
  * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 0.
  * W efekcie tego ulegnie zapalenie odpowiedniego pola.
  * \param[in] _sensor - tablica zawierająca dane z czujników
@@ -82,6 +85,7 @@ QPixmap FrontAnimation::WhichRangeLOn(int _sensor[4]){
 }
 
 /*!
+ * \brief Sprawdzenie zakresu dla czujnika z prawej strony
  * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 4.
  * W efekcie tego ulegnie zapalenie odpowiedniego pola.
  * \param[in] _sensor - tablica zawierająca dane z czujników
@@ -111,6 +115,7 @@ QPixmap FrontAnimation::WhichRangePOn(int _sensor[4]){
 
 
 /*!
+ * \brief Sprawdzenie zakresu dla dwóch czujników na środku
  * Funkcja odowiedzialna za odpowiednią konfiguracje metody SetCurrentRange w zależności od odległości od czujnika numer 2 lub 3.
  * \param[in] number - liczba odpowiadająca odległości jednego czujnika
  * \return zwrócenie odpowiedniej wartości w zależności od czujnika 2 lub 3

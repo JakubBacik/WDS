@@ -6,7 +6,10 @@
 #include <iostream>
 
 /*!
- * \brief Klasa definująca obsługę podświetlania pól przed samochodem.
+ * \brief Klasa modelująca obsługę podświetlania pól przed samochodem.
+ * Klasa modelująca obsługę pól przed samochodzem, odpowiednie włączanie
+ * lub wyłączenie zależnie od odległości pochodzących z czujników
+ * ultradźwiękowych
  */
 class FrontAnimation{
 public:

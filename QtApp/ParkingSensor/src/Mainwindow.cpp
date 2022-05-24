@@ -2,21 +2,25 @@
 #include "ui_mainwindow.h"
 
 /*!
- * Konstruktor klasy MainWindow w którym ustawiane jest ui oraz skonfigurowany został timer
- * \param parent - klasa bazowa
+ * \brief Konstruktor klasy
+ * Konstruktor klasy MainWindow w którym ustawiane jest ui, konfigurowany jest timer, animacja przed samochodem i etykiety wyświetlające wartości
+ * \param[in] parent - klasa bazowa
  */
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow) {
     setAttribute(Qt::WA_DeleteOnClose, false);
     setAttribute(Qt::WA_QuitOnClose);
     ui->setupUi(this);
-    initConfiguration();
+    initFrontAnimationConfiguration();
     connect(_qTimer, SIGNAL(timeout()), this, SLOT(onStopertimeout()));
     _qTimer->setInterval(100);
     _qTimer->setSingleShot(true);
     _qTimer->start();
+    initSensorLabelConfiguration();
+    deleteSensorLabelConfiguration();
 }
 
 /*!
+ * \brief Destruktor klasy
  * Destruktor klasy MainWindow
  */
 MainWindow::~MainWindow()
@@ -25,7 +29,8 @@ MainWindow::~MainWindow()
 }
 
 /*!
- * Metoda wywołana gdy zostanie naciśnięty przycisk polaczenia na pasku.
+ * \brief Naciśniecie przycisku konfiguracja
+ * Metoda wywołana, po naciśnięty przycisku połącz na rozwijanej liscie po naciśnięciu przycisku ustawienia, wyowłująca metode, odpowiedzialna za przeszukiwanie aktywnych portów.
  */
 void MainWindow::on_actionConfiguration_triggered()
 {
@@ -39,8 +44,9 @@ void MainWindow::on_actionConfiguration_triggered()
 }
 
 /*!
+ * \brief Naciśniecie przycisku połącz
  * Metoda wywołana po naciśnięciu przycisku połacz w oknie dialogowym
- * \param portName - nazwa portu
+ * \param[in] portName - nazwa portu np. ttyACM0
  */
 void MainWindow::ConnectDevices(QString portName){
     _communication->Start();
@@ -53,18 +59,20 @@ void MainWindow::ConnectDevices(QString portName){
 }
 
 /*!
+ * \brief Naciśniecie przycisku rozłącz
  * Metoda wywołana po naciśnięciu przycisku rozłącz w oknie dialogowym
  */
 void MainWindow::DisconnectDevices(){
     _communication->Stop();
     _isConnection=false;
-    deleteConfiguration();
+    deleteFrontAnimationonfiguration();
     ui->MainWindowStatusBar->showMessage(tr("Urządzenie zostało rozłączone"), 2000);
 }
 
 /*!
+ * \brief Zamknięcie okna
  * Metoda wywoływana podczas zamnknięcia okna
- * \param pEvent
+ * \param[in] pEvent - wskaźnik na obiekt klasy QCloseEvent
  */
 void MainWindow::closeEvent(QCloseEvent *pEvent){
     _communication->Stop();
@@ -74,7 +82,8 @@ void MainWindow::closeEvent(QCloseEvent *pEvent){
 }
 
 /*!
- * Metoda wywoływana cyklicznie co określony czas za pomoca QTimer
+ * \brief Po przepełnieniu timera
+ * Metoda wywoływana cyklicznie co określony czas za pomoca QTimer, odpowiedzialna za pobieranie danych oraz wstawianie aktualnych wartości do etykiet.
  */
 void MainWindow::onStopertimeout(){
     std::string stringToParse;
@@ -100,9 +109,10 @@ void MainWindow::onStopertimeout(){
 }
 
 /*!
+ * \brief Parsowanie danych
  * Metoda odpowiedzialna za parsowanie danych wejściowych.
- * \param pDataFrame - dane wejściowe
- * \param sensor - tablica sensorów
+ * \param[in] pDataFrame - dane wejściowe
+ * \param[in] sensor - tablica sensorów
  * \retval false - jeśli dane wejściowe nie są w formie zakładanej ramki
  * \retval true - w przeciwnym przypadku
  */
@@ -120,9 +130,10 @@ bool MainWindow::ParseDataFrame(const char* pDataFrame, int *sensor){
 }
 
 /*!
+ * \brief Jeden byte konwersja
  * Funkcja odpowiedzialna za konwersje jednego znaku.
- * \param data - jeden znak do konwersji
- * \param crc - wartość po konwersji
+ * \param[in] data - jeden znak do konwersji
+ * \param[in] crc - wartość po konwersji
  * \return zwrócony jest jeden
  */
 uint16_t MainWindow::processByte(uint8_t data, uint16_t& crc) {
@@ -139,9 +150,10 @@ uint16_t MainWindow::processByte(uint8_t data, uint16_t& crc) {
 }
 
 /*!
+ * \brief konwersja do CRC16
  * Funkcja odpowiedzialna za obliczenie sumy kontrolnej
- * \param data_p - łancuch znakowy
- * \param length - długość łancucha zankowego
+ * \param[in] data_p - łancuch znakowy
+ * \param[in] length - długość łancucha zankowego
  * \return zwrócona jest suma kontrolna CRC16
  */
 uint16_t MainWindow::processBuffer(const char *data_p, uint16_t length) {
@@ -154,67 +166,72 @@ uint16_t MainWindow::processBuffer(const char *data_p, uint16_t length) {
 }
 
 /*!
- * Metoda odpowiedzialna za ustawienie wartości labelów w oknie głównym.
+ * \brief Aktualizowanie danych
+ * Metoda odpowiedzialna za aktualizowanie wartości etykiet w oknie głównym, danych w wykresie oraz odpowiedniej bitmapy przed samochodem.
  */
 void MainWindow::showData(){
     _second++;
 
-    ui->labelSensor1->setNum(_sensor[0]);
-    ui->labelSensor2->setNum(_sensor[1]);
-    ui->labelSensor3->setNum(_sensor[2]);
-    ui->labelSensor4->setNum(_sensor[3]);
-    if(((_second%10) ==0)){
-        std::cerr<<_second << std::endl;
-        _myQChart->updateData(_sensor, _second/10);
-    }
+    sensorLabel[0]->setNum(_sensor[0]);
+    sensorLabel[1]->setNum(_sensor[1]);
+    sensorLabel[2]->setNum(_sensor[2]);
+    sensorLabel[3]->setNum(_sensor[3]);
+    _myQChart->updateData(_sensor, _second);
     ui->labelSensorView1->setPixmap(_frontAnimation->WhichRangeLOn(_sensor));
     ui->labelSensorView2->setPixmap(_frontAnimation->WhichRangePOn(_sensor));
-
+    ui->labelSensorView1->setScaledContents(true);
+    ui->labelSensorView2->setScaledContents(true);
 
 }
 
 /*!
- * Metoda odpowiedzialna za zainicjowanie wykresów oraz bitmap
+ * \brief Inicjalizacja animacji przed samochodem
+ * Metoda odpowiedzialna za zainicjowanie wykresów oraz początkowej bitmapy przed samochodem
  */
-void MainWindow::initConfiguration(){
+void MainWindow::initFrontAnimationConfiguration(){
     _myQChart->initChart();
     ui->graphicsViewPlot1->setChart(_myQChart->getChart(0));
     ui->graphicsViewPlot2->setChart(_myQChart->getChart(1));
     ui->graphicsViewPlot3->setChart(_myQChart->getChart(2));
     ui->graphicsViewPlot4->setChart(_myQChart->getChart(3));
-    ui->labelCar->setPixmap(_frontAnimation->SetCurrentRange(0,0,1).scaled(ui->labelCar->width(), ui->labelCar->height(), Qt::KeepAspectRatio));
-    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(ui->labelSensorView1->width(), ui->labelSensorView1->height(), Qt::KeepAspectRatio));
-    ui->labelSensorView2->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(ui->labelSensorView2->width(), ui->labelSensorView2->height(), Qt::KeepAspectRatio));
+    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1));
+    ui->labelSensorView2->setPixmap(_frontAnimation->SetCurrentRange(2,0,1));
+    ui->labelSensorView1->setScaledContents(true);
+    ui->labelSensorView2->setScaledContents(true);
+
+
 }
 
 /*!
+ * \brief Usuwanie danych
  * Metoda odpowiedzialna za wyczyszczenie wykresów z danych oraz ustawie podstawowych bitmap
  */
-void MainWindow::deleteConfiguration(){
-    ui->labelSensor1->setNum(0);
-    ui->labelSensor2->setNum(0);
-    ui->labelSensor3->setNum(0);
-    ui->labelSensor4->setNum(0);
+void MainWindow::deleteFrontAnimationonfiguration(){
     _second=0;
     _myQChart->clearChart();
-    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1).scaled(ui->labelSensorView1->width(), ui->labelSensorView1->height(), Qt::KeepAspectRatio));
-    ui->labelSensorView2->setPixmap(_frontAnimation->SetCurrentRange(2,0,1).scaled(ui->labelSensorView2->width(), ui->labelSensorView2->height(), Qt::KeepAspectRatio));
+    deleteSensorLabelConfiguration();
+    ui->labelSensorView1->setPixmap(_frontAnimation->SetCurrentRange(1,0,1));
+    ui->labelSensorView2->setPixmap(_frontAnimation->SetCurrentRange(2,0,1));
+    ui->labelSensorView1->setScaledContents(true);
+    ui->labelSensorView2->setScaledContents(true);
 }
 
 
 /*!
+ * \brief Zmiana języka na polski
  * Metoda która zostanie wywołana po naciśnięciu przycisku z menu wysuwanego
- * zmniejacy jezyk na polski
+ * zmniejacy jezyk aplikacji na polski
  */
 void MainWindow::on_actionPolski_triggered()
 {
     qApp->removeTranslator(translator);
     ui->retranslateUi(this);
-    initConfiguration();
+    _myQChart->translateChart();
 }
 /*!
+ * \brief Zmania języka na angielski
 * Metoda która zostanie wywołana po naciśnięciu przycisku z menu wysuwanego
-* zmniejacy jezyk na angielski
+* zmniejacy jezyk aplikacji na angielski
 */
 void MainWindow::on_actionAngielski_triggered()
 {
@@ -224,6 +241,69 @@ void MainWindow::on_actionAngielski_triggered()
         std::cerr << "Plik nie został załadowany" << std::endl;
     }
     ui->retranslateUi(this); 
-    initConfiguration();
+    _myQChart->translateChart();
+}
+
+/*!
+ * \brief Zmiana okna dialogowego
+ * Metoda odpowiedzialna za zmiane położenia etykiet odpowiedzialnych za wyświetlanie wartości dla czujników.
+ */
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+   QMainWindow::resizeEvent(event);
+   sensorLabel[0]->setGeometry((this->width() - this->width()/1.5), (this->height() - this->height()/2.45), 40, 40);
+   sensorLabel[1]->setGeometry((this->width() - this->width()/1.8), (this->height() - this->height()/2.2), 40, 40);
+   sensorLabel[2]->setGeometry((this->width() - this->width()/2.2), (this->height() - this->height()/2.2), 40, 40);
+   sensorLabel[3]->setGeometry((this->width() - this->width()/2.9), (this->height() - this->height()/2.45), 40, 40);
+}
+
+/*!
+ * \brief Naciśnięcie zakładki w oknie głównym
+ * Metoda wywołana po naciśnięciu jednej z zakładki, powoduje wyświetlanie albo ukrycie etykiet odpowiedzialnych za wyświetlanie odpowiedniej wartości dla czujnika.
+ */
+void MainWindow::on_tabWidget_tabBarClicked(int index)
+{
+    if(index == 1){
+        sensorLabel[0]->hide();
+        sensorLabel[1]->hide();
+        sensorLabel[2]->hide();
+        sensorLabel[3]->hide();
+    }
+    if(index == 0){
+        sensorLabel[0]->show();
+        sensorLabel[1]->show();
+        sensorLabel[2]->show();
+        sensorLabel[3]->show();
+    }
+}
+
+/*!
+ * \brief Inicjalizacja etykiet
+ * Metoda odpowiedzalna za wstępną konfiguracje etykiet odpowiedzialnych za wyświetlanie wartości dla czujników
+ */
+void MainWindow::initSensorLabelConfiguration(){
+    sensorLabel[0]=new QLabel(this);
+    sensorLabel[0]->setGeometry((this->width() - 350), (this->height() - 150), 20, 20);
+    sensorLabel[0]->show();
+    sensorLabel[1]=new QLabel(this);
+    sensorLabel[1]->setGeometry((this->width() - 290), (this->height() - 200), 20, 20);
+    sensorLabel[1]->show();
+    sensorLabel[2]=new QLabel(this);
+    sensorLabel[2]->setGeometry((this->width() - 250), (this->height() - 200), 20, 20);
+    sensorLabel[2]->show();
+    sensorLabel[3]=new QLabel(this);
+    sensorLabel[3]->setGeometry((this->width() - 200), (this->height() - 150), 20, 20);
+    sensorLabel[3]->show();
+}
+
+/*!
+ * \brief Usuwanie danych z etykiet
+ * Metoda odpowiedzialna za wyzerowanie wartości etykiet odpowiedzialnych za wyświetlanie wartości dla czujników
+ */
+void MainWindow::deleteSensorLabelConfiguration(){
+    sensorLabel[0]->setNum(0);
+    sensorLabel[1]->setNum(0);
+    sensorLabel[2]->setNum(0);
+    sensorLabel[3]->setNum(0);
 }
 

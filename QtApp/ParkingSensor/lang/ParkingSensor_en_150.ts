@@ -35,14 +35,6 @@
         <translation>Home</translation>
     </message>
     <message>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Wykresy</source>
         <translation>Plots</translation>
     </message>
@@ -94,8 +86,8 @@
         <translation>Length [cm]</translation>
     </message>
     <message>
-        <source>Czas [s]</source>
-        <translation>Time [s]</translation>
+        <source>Czas [ms]</source>
+        <translation>Time [ms]</translation>
     </message>
 </context>
 </TS>

@@ -16,7 +16,9 @@
 #include "ui_connectionwitharduino.hh"
 
 /*!
- * \brief Klasa definująca wybór portu poprzez okno dialogowe
+ * \brief Klasa modelująca pojęcie ConnectionDialog
+ * Klasa modelująca okno dialogowe umożliwiające
+ * konfigurowanie połączenia.
  */
 class ConnectionDialog : public QDialog
 {
@@ -25,10 +27,23 @@ public:
     ConnectionDialog(QWidget *parent = 0);
 
 private:
+    /*!
+     * \brief Ui okno dialogowe
+     * ui okna dialogowego konfigurowania połączenia
+     */
     Ui::ConnectionWithArduinoClass ui;
 
 signals:
+    /*!
+     * \brief Wysłanie nazwy portu
+     * Sygnał odpowiedzialny za wysłanie nazwy portu do głównego okna
+     */
     void SendTo(QString portName);
+    /*!
+     * \brief Wysłane po zamknięciu okna dialogowego
+     * Sygnał odpowiedzialny za wysłanie informacji o zmniejszeniu się liczby
+     * otwartych okien dialogowych po zamknięciu okna dialogowego
+     */
     void ChangeNumberOfWindow();
 
 private slots:

@@ -1,8 +1,23 @@
 #include "inc/MyQChart.hh"
 
 /*!
- * \brief
- * Metoda inicjująca cztery wykresy.
+ * /brief Metoda tłumacząca
+ * Metoda wywoływania przy tłumaczeniu, odpowiedzialna za tłumaczenie zakładki wykres
+ */
+void MyQChart::translateChart(){
+    for(int i=0; i<4; i++){
+        QString title = QObject::tr("Czujnik %1").arg(i+1);
+        _chart[i]->setTitle(title);
+        QString axisYTitleText = QObject::tr("Odległość [cm]");
+        _axisY[i]->setTitleText(axisYTitleText);
+        QString axisXTitleText = QObject::tr("Czas [ms]");
+        _axisX[i]->setTitleText(axisXTitleText);
+    }
+}
+
+/*!
+ * \brief Inicjalizacja wykresów
+ * Metoda inicjująca oraz konfigurująca cztery wykresy.
  */
 void MyQChart::initChart(){
     for(int i=0; i<4; i++){
@@ -16,15 +31,15 @@ void MyQChart::initChart(){
         QString axisYTitleText = QObject::tr("Odległość [cm]");
         _axisY[i]->setTitleText(axisYTitleText);
         _axisX[i] = new QValueAxis();
-        _axisX[i]->setRange(-4,0);
-        _axisX[i]->setRange(-20,0);
+        _axisX[i]->setRange(-200,0);
         _axisX[i]->setTickCount(1);
-        QString axisXTitleText = QObject::tr("Czas [s]");
+        _axisX[i]->setLabelFormat("%g0");
+        QString axisXTitleText = QObject::tr("Czas [ms]");
         _axisX[i]->setTitleText(axisXTitleText);
     }
 
     for(int i=0; i<4; i++){
-        for(int j=-20; j<1; j++){
+        for(int j=-200; j<1; j++){
             _series[i]->append(j,0);
         }
     }
@@ -38,16 +53,16 @@ void MyQChart::initChart(){
 }
 
 /*!
- * \brief
+ * \brief Uaktualnianie danych
  * Metoda aktualizująca dane w czterech wykresach
- * \param sensor - tablica zawierająca cztery wartości z czujników
- * \param second - liczba sekund od momentu włączenia
+ * \param[in] sensor - tablica zawierająca cztery wartości z czujników
+ * \param[in] second - liczba sekund od momentu włączenia
  */
 void MyQChart::updateData(int sensor[4], int second){
     for(int i=0; i<4; i++){
-        _axisX[i]->setRange(second-20 ,second);
+        _axisX[i]->setRange(second-200 ,second);
         _axisX[i]->setTickCount(1);
-        _series[i]->remove(4);
+        _series[i]->remove(1);
         _series[i]->append(second, sensor[i]);
     }
     for(int i=0; i<4; i++){
@@ -57,7 +72,7 @@ void MyQChart::updateData(int sensor[4], int second){
 }
 
 /*!
- * \brief
+ * \brief Destruktor
  * Deskruktor klasy
  */
 MyQChart::~MyQChart(){
@@ -70,13 +85,13 @@ MyQChart::~MyQChart(){
 }
 
 /*!
- * \brief
- * Metoda odpowiedzialna za wyczyszczenie danych w wykresie
+ * \brief Wyczyszczenie danych z wykresu
+ * Metoda odpowiedzialna za wyczyszczenie danych aktualnie znajdujących się w  wykresie
  */
 void MyQChart::clearChart(){
     int tab[4]={0,0,0,0};
 
-    for(int j=-20; j<1; j++){
+    for(int j=-200; j<1; j++){
         updateData(tab, j);
     }
 }

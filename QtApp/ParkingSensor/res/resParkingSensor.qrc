@@ -1,7 +1,6 @@
 <RCC>
   <qresource prefix="View">
     <file>img/car/caricon.png</file>
-    <file>img/car/caricon.png</file>
     <file>img/sensorView/SensorViewDefaultL1.png</file>
     <file>img/sensorView/SensorViewDefaultL2.png</file>
     <file>img/sensorView/SensorViewDefaultL3.png</file>
