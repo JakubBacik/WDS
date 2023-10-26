@@ -9,6 +9,6 @@ The goal of the project was to create a graphical application that visualizes da
 ![FrontView3](https://github.com/JakubBacik/WDS/blob/main/Picture/FrontView3.jpg?raw=true)
 ![HardwarePart1](https://github.com/JakubBacik/WDS/blob/main/Picture/HardwarePart1.jpg?raw=true)
 ![HardwarePart2](https://github.com/JakubBacik/WDS/blob/main/Picture/HardwarePart2.jpg?raw=true)
-![MainWindow](https://github.com/JakubBacik/WDS/blob/main/Picture/MainWindow.jpg?raw=true)
+![MainWindow](https://github.com/JakubBacik/WDS/blob/main/Picture/MainWindow.png)
 ![PlotWindow](https://github.com/JakubBacik/WDS/blob/main/Picture/PlotWindow.png?raw=true)
 ![Sensor4](https://github.com/JakubBacik/WDS/blob/main/Picture/Sensor4.jpg?raw=true)
