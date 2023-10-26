@@ -1,4 +1,8 @@
 # WDS
+### Description
+
+This project is primarily developed in C++ and relies on the Qt library for its graphical user interface and certain functionalities. Qt is a powerful framework that allows for cross-platform development and provides tools for creating both desktop and mobile applications.
+
 ## Main info
 The goal of the project was to create a graphical application that visualizes data from sensors simulating a car's front parking sensors. The project consists of both hardware and software components. The first part consists of an Arduino Uno microcontroller and 4 ultrasonic sensors (HC-SR04). The second part, on the other hand, is an application designed to visualize whether there is an obstacle in front of the sensors and, if so, at what distance.
 
